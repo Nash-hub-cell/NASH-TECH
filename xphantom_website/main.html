@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASH TECH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', sans-serif;
+        }
+        body {
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+            background: #0a0a1a;
+        }
+        #vanta-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+        .container {
+            background: rgba(28, 28, 44, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(51, 204, 204, 0.3), 0 0 40px rgba(204, 51, 204, 0.2);
+            width: 90vw;
+            max-width: 550px;
+            text-align: center;
+            border: 2px solid transparent;
+            animation: borderGlow 5s ease-in-out infinite;
+            margin: 20px;
+            opacity: 1;
+            transform: scale(1);
+        }
+        @keyframes borderGlow {
+            0% { border-color: #33cccc; box-shadow: 0 0 20px rgba(51, 204, 204, 0.3); }
+            50% { border-color: #cc33cc; box-shadow: 0 0 30px rgba(204, 51, 204, 0.3); }
+            100% { border-color: #33cccc; box-shadow: 0 0 20px rgba(51, 204, 204, 0.3); }
+        }
+        .logo {
+            width: 25vw;
+            max-width: 220px;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 10px #33cccc);
+            animation: neonFlicker 2s ease-in-out infinite alternate, rotate3D 12s linear infinite;
+        }
+        @keyframes neonFlicker {
+            0% { filter: drop-shadow(0 0 10px #33cccc); }
+            100% { filter: drop-shadow(0 0 15px #33cccc); }
+        }
+        @keyframes rotate3D {
+            0% { transform: perspective(1000px) rotateY(0deg); }
+            100% { transform: perspective(1000px) rotateY(360deg); }
+        }
+        h1 {
+            color: #33cccc;
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #33cccc;
+            animation: textPulse 3s ease-in-out infinite;
+        }
+        @keyframes textPulse {
+            0% { text-shadow: 0 0 10px #33cccc; }
+            50% { text-shadow: 0 0 15px #33cccc; }
+            100% { text-shadow: 0 0 10px #33cccc; }
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        label {
+            font-size: 1.3rem;
+            color: #e0e0e0;
+            text-align: left;
+            text-shadow: 0 0 5px #33cccc;
+        }
+        input {
+            padding: 14px;
+            font-size: 1.2rem;
+            border: 2px solid #33cccc;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #e0e0e0;
+            outline: none;
+            transition: all 0.4s ease;
+            width: 100%;
+            animation: inputGlow 4s ease-in-out infinite;
+        }
+        input:focus {
+            border-color: #f1c40f;
+            box-shadow: 0 0 15px #f1c40f;
+            animation: none;
+        }
+        @keyframes inputGlow {
+            0% { box-shadow: 0 0 8px rgba(51, 204, 204, 0.4); }
+            50% { box-shadow: 0 0 12px rgba(51, 204, 204, 0.6); }
+            100% { box-shadow: 0 0 8px rgba(51, 204, 204, 0.4); }
+        }
+        .btn {
+            padding: 16px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .submit-btn {
+            background: linear-gradient(45deg, #e67e22, #f39c12);
+            color: #e0e0e0;
+            box-shadow: 0 0 15px #e67e22;
+        }
+        .submit-btn:hover {
+            background: linear-gradient(45deg, #f39c12, #f7b731);
+            box-shadow: 0 0 20px #f39c12;
+            transform: scale(1.03);
+            animation: buttonPulse 1.5s ease-in-out infinite;
+        }
+        .exit-btn {
+            background: linear-gradient(45deg, #6a1b9a, #8e44ad);
+            color: #e0e0e0;
+            box-shadow: 0 0 15px #6a1b9a;
+        }
+        .exit-btn:hover {
+            background: linear-gradient(45deg, #8e44ad, #a569bd);
+            box-shadow: 0 0 20px #8e44ad;
+            transform: scale(1.03);
+            animation: buttonPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+            100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background: rgba(28, 28, 44, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 80vw;
+            max-width: 450px;
+            border: 2px solid #33cccc;
+            box-shadow: 0 0 20px #33cccc;
+            animation: borderGlow 5s ease-in-out infinite;
+        }
+        .popup-content h2 {
+            color: #33cccc;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #33cccc;
+            font-size: 1.8rem;
+        }
+        .popup-content p {
+            color: #e0e0e0;
+            font-size: 1.2rem;
+        }
+        .popup-btn {
+            background: linear-gradient(45deg, #e67e22, #f39c12);
+            color: #e0e0e0;
+            margin-top: 20px;
+            box-shadow: 0 0 15px #e67e22;
+        }
+        .popup-btn:hover {
+            background: linear-gradient(45deg, #f39c12, #f7b731);
+            box-shadow: 0 0 20px #f39c12;
+            transform: scale(1.03);
+            animation: buttonPulse 1.5s ease-in-out infinite;
+        }
+        .yes-btn {
+            background: linear-gradient(45deg, #e67e22, #f39c12);
+            box-shadow: 0 0 15px #e67e22;
+        }
+        .yes-btn:hover {
+            background: linear-gradient(45deg, #f39c12, #f7b731);
+            box-shadow: 0 0 20px #f39c12;
+        }
+        .no-btn {
+            background: linear-gradient(45deg, #6a1b9a, #8e44ad);
+            box-shadow: 0 0 15px #6a1b9a;
+        }
+        .no-btn:hover {
+            background: linear-gradient(45deg, #8e44ad, #a569bd);
+            box-shadow: 0 0 20px #8e44ad;
+        }
+        .popup-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 95vw;
+                padding: 25px;
+            }
+            .logo {
+                width: 35vw;
+                max-width: 180px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            label, input, .btn {
+                font-size: 1.1rem;
+            }
+            .popup-content h2 {
+                font-size: 1.5rem;
+            }
+            .popup-content p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="vanta-bg"></div>
+    <div class="container">
+        <img src="C:\Users\KONZA-VDI\Desktop\NASH CRASH WEBSITE\logo.png" alt="XPHANTOM Logo" class="logo">
+        <h1>NASH CRASH</h1>
+        <form id="crashForm">
+            <label for="countryCode">Country Code (e.g., 254)</label>
+            <input type="text" id="countryCode" placeholder="Enter country code" required>
+            <label for="phoneNumber">Phone Number</label>
+            <input type="text" id="phoneNumber" placeholder="Enter phone number" required>
+            <label for="crashCount">Number of Crashes (Max 15)</label>
+            <input type="number" id="crashCount" placeholder="Enter crash count" min="1" max="15" required>
+            <button type="submit" class="btn submit-btn">Submit</button>
+            <button type="button" class="btn exit-btn" onclick="window.close()">Exit</button>
+        </form>
+    </div>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2 id="popupTitle">we are annonimous</h2>
+            <p id="popupMessage">join us</p>
+            <button class="btn popup-btn" onclick="closePopup()">OK</button>
+        </div>
+    </div>
+    <div id="confirmPopup" class="popup">
+        <div class="popup-content">
+            <h2>Confirm</h2>
+            <p id="confirmMessage"></p>
+            <div class="popup-buttons">
+                <button class="btn yes-btn" onclick="confirmAction()">Yes</button>
+                <button class="btn no-btn" onclick="closeConfirmPopup()">No</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        VANTA.WAVES({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 500.00,
+            minWidth: 500.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            points: 10.00,
+            color: 0x33cccc,
+            shininess: 30.00,
+            waveHeight: 15.00,
+            waveSpeed: 0.5,
+            zoom: 0.9,
+            backgroundColor: 0x0a0a1a
+            spacing: 15.00
+        });
+
+        window.addEventListener('load', () => {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            console.log(Logged in user: ${loggedInUser});
+            if (!loggedInUser || !localStorage.getItem(user_${loggedInUser})) {
+                window.location.href = 'c:\Users\KONZA-VDI\Desktop\NASH CRASH WEBSITE\main.html';
+            }
+        });
+
+        document.getElementById('c:\Users\KONZA-VDI\Desktop\NASH CRASH WEBSITE\main.html').addEventListener('submit', function(event) {
+    event.preventDefault();
+    validateAndSubmit();
+});
+
+function validateAndSubmit() {
+    const countryCode = document.getElementById('countryCode').value.trim();
+    const phoneNumber = document.getElementById('phoneNumber').value.trim();
+    const crashCount = document.getElementById('crashCount').value;
+
+    // Validation
+    if (!/^\d+$/.test(countryCode)) {
+        showPopup('Error', 'Country code must be numeric.');
+        return;
+    }
+    if (!/^\d+$/.test(phoneNumber)) {
+        showPopup('Error', 'Phone number must be numeric.');
+        return;
+    }
+    if (phoneNumber.length < 7 || phoneNumber.length > 15) {
+        showPopup('Error', 'Phone number length is invalid.');
+        return;
+    }
+    if (isNaN(crashCount) || crashCount < 1 || crashCount > 15) {
+        showPopup('Error', 'Crash count must be between 1 and 15.');
+        return;
+    }
+
+    const combinedNumber = +${countryCode}${phoneNumber};            
+    showConfirmPopup(combinedNumber, parseInt(crashCount));
+}
+
+function showPopup(title, message) {
+    const popup = document.getElementById('popup');
+    document.getElementById('popupTitle').textContent = title;
+    document.getElementById('popupMessage').textContent = message;
+    popup.style.display = 'flex';
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+}
+
+function showConfirmPopup(combinedNumber, crashCount) {
+    const confirmPopup = document.getElementById('confirmPopup');
+    document.getElementById('confirmMessage').textContent = Confirm number: ${combinedNumber}\nProceed? (Y/N);
+    confirmPopup.style.display = 'flex';
+    window.confirmAction = () => sendMessages(combinedNumber, crashCount); // Store function globally
+}
+
+function closeConfirmPopup() {
+    document.getElementById('confirmPopup').style.display = 'none';
+}
+
+async function sendMessages(combinedNumber, crashCount) {
+    closeConfirmPopup();
+    showPopup('Info', Sending messages to: ${combinedNumber} ...);
+
+    const link = https://wa.me/${combinedNumber}/?text=XPHANTOM%20%F0%9F%92%A3%20TeaM%20XPH4N70M%F0%9F%92%A3%20*9999999999*%20*XPHANTOM*%20*9999999999*;
+
+    for (let i = 0; i < crashCount; i++) {
+        try {
+            window.open(link, '_blank');
+            showPopup('Success', Message ${i + 1}/${crashCount} sent successfully.);
+        } catch (error) {
+            showPopup('Error', Failed to send message ${i + 1}: ${error.message});
+        }
+        await new Promise(resolve => setTimeout(resolve, 40000)); // 40-second delay
+    }
+
+    showPopup('Completed', Sent ${crashCount} messages to ${combinedNumber}.);
+    document.getElementById('crashForm').reset();
+}
